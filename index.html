@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101211">
+  <meta name="description" content="Choose a pantheon and three gods to explore your build.">
+  <title>Divine Assembly · God Selector</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23101211'/%3E%3Cpath d='M36 7 15 36h16l-4 21 23-31H34z' fill='%23d5b97b'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Divine Assembly home"><span class="brand-mark">✧</span> DIVINE ASSEMBLY</a>
+      <div class="header-actions"><span class="test-badge"><i></i> BUILD SANDBOX</span><button class="text-button" id="reset" type="button"><span aria-hidden="true">↻</span> <span class="reset-label">Start over</span></button></div>
+    </header>
+
+    <main>
+      <div class="workspace">
+        <section class="selection-panel" aria-label="God selection">
+          <div class="assembly"><div class="assembly-line" aria-hidden="true"></div><div id="slots" class="slots"></div></div>
+          <div class="selection-heading"><div><p class="eyebrow" id="step-label">THE FIRST STEP</p><h2 id="choice-title" tabindex="-1">Choose your pantheon</h2><p class="subtitle" id="choice-description">Three ancient worlds. One divine allegiance.</p></div><span class="step-counter" id="step-counter">00 <span>/ 03</span></span></div>
+          <div class="cards" id="cards"></div>
+          <div class="selection-footer"><button class="text-button" type="button" id="back" hidden>← Back</button><p id="selection-hint">Your pantheon determines the gods you can choose.</p><span class="footer-star" aria-hidden="true">✧</span></div>
+        </section>
+
+        <aside class="stats-panel" aria-labelledby="stats-title">
+          <div class="stats-heading"><span class="eyebrow">YOUR BUILD</span><span class="live-label"><i></i> LIVE</span></div>
+          <h2 id="stats-title">Divine blessings</h2><p class="stats-description">The power of your chosen gods, combined.</p>
+          <div class="allegiance"><span class="allegiance-symbol" id="pantheon-symbol">◇</span><div><span class="small-label">PANTHEON</span><strong id="pantheon-name">Not yet chosen</strong></div></div>
+          <div class="stats-list" id="stats-list" aria-live="polite" aria-atomic="true"></div>
+          <div class="build-progress"><div><span>Gods selected</span><strong id="god-count">0 <span>/ 3</span></strong></div><div class="progress-track"><div id="progress-fill"></div></div></div>
+          <div class="status-note" id="status-note"><span aria-hidden="true">✧</span><p>Your story is unwritten.<br>Choose a pantheon to begin.</p></div>
+          <p class="sample-note">SANDBOX · Sample gods & stats</p>
+        </aside>
+      </div>
+    </main>
+    <footer class="page-footer"><span>Sample gods & stats</span><span>One pantheon. Three gods.</span></footer>
+    <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
+  </div>
+  <dialog id="ability-dialog" aria-labelledby="ability-title" aria-describedby="ability-role">
+    <div class="ability-dialog-header"><div><p class="eyebrow">DIVINE BLESSING</p><h2 id="ability-title"></h2><p id="ability-role"></p></div><button id="ability-close" type="button" aria-label="Close ability details" autofocus>×</button></div>
+    <section class="ability-section"><div class="ability-section-label"><span>ACTIVE CITY ABILITY</span><strong id="ability-cooldown"></strong></div><h3 id="ability-active-name"></h3><p id="ability-active-description"></p></section>
+    <section class="ability-section"><div class="ability-section-label"><span>PASSIVE EFFECT</span><span>Always active</span></div><h3 id="ability-passive-name"></h3><p id="ability-passive-description"></p></section>
+  </dialog>
+</body>
+</html>

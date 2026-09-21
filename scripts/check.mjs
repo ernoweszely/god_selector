@@ -14,7 +14,15 @@ for (const path of ['data.js', 'app.js', ...scripts.map(name => `scripts/${name}
 
 // Evaluate only our data definitions, without loading browser UI code.
 const data = vm.runInNewContext(`${await read('data.js')}\n({ PANTHEONS, STATS, ACTIVE_COOLDOWN_HOURS, icons });`, {}, { timeout: 1000 });
-const assets = new Set((await readdir(resolve(ROOT, 'assets'))).map(name => `assets/${name}`));
+async function listAssets(dir = 'assets') {
+  const entries = await readdir(resolve(ROOT, dir), { withFileTypes: true });
+  const paths = await Promise.all(entries.map(entry => {
+    const path = `${dir}/${entry.name}`;
+    return entry.isDirectory() ? listAssets(path) : [path];
+  }));
+  return paths.flat();
+}
+const assets = new Set(await listAssets());
 const usedImages = new Set();
 const pantheonIds = new Set();
 const statIds = new Set(data.STATS.map(stat => stat.id));
@@ -48,6 +56,8 @@ for (const pantheon of data.PANTHEONS) {
         assert(god.passive?.name && god.passive?.description && god.passive?.summary, `Incomplete passive for ${god.name}`);
         assert.equal(god.active.cooldownHours, 24, `${god.name} must have a 24h cooldown`);
         assert.equal(Object.keys(god.stats).length, 0, `${god.name} still has sample stats`);
+        checkImage(god.active.icon);
+        checkImage(god.passive.icon);
       }
     }
   }
@@ -57,7 +67,9 @@ for (const path of usedImages) {
   if (!path.endsWith('.png')) continue;
   const bytes = await readFile(resolve(ROOT, path));
   assert(bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), `Invalid PNG: ${path}`);
-  assert.equal(bytes.readUInt32BE(20), bytes.readUInt32BE(16) * 2, `Banner must be 1:2: ${path}`);
+  if (!path.includes('/abilities/')) {
+    assert.equal(bytes.readUInt32BE(20), bytes.readUInt32BE(16) * 2, `Banner must be 1:2: ${path}`);
+  }
 }
 
 const html = await read('index.html');

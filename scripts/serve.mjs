@@ -32,7 +32,7 @@ const server = createServer(async (request, response) => {
     }
     if (!path.startsWith(values.base)) { response.writeHead(404).end('Not found'); return; }
     const name = path.slice(values.base.length) || 'index.html';
-    if (!PUBLIC_FILES.includes(name) && !/^assets\/[a-zA-Z0-9_.-]+\.(png|jpe?g|webp|avif|svg)$/.test(name)) {
+    if (!PUBLIC_FILES.includes(name) && !/^assets\/(?:[a-zA-Z0-9_.-]+\/)*[a-zA-Z0-9_.-]+\.(png|jpe?g|webp|avif|svg)$/.test(name)) {
       response.writeHead(404).end('Not found'); return;
     }
     const file = await realpath(resolve(root, name));

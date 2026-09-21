@@ -332,11 +332,16 @@ h2 { font: 500 28px/1.15 var(--serif); }
 .cards:has(.card-option) { --caption-space: 120px; }
 .god-role { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.3; text-wrap: balance; }
 .selected-blessing .god-role { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.3; }
-.ability-info { position: absolute; bottom: 4px; left: 0; width: 100%; min-height: 40px; padding: 3px; background: transparent; border: 0; color: var(--gold); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
+.ability-info { position: absolute; bottom: 4px; left: 0; width: 100%; min-height: 54px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 5px; padding: 3px; background: transparent; border: 0; color: var(--gold); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
 .ability-info:hover { color: var(--text); }
+.ability-card-icons, .ability-mini-icons { display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.ability-icon { width: 28px; height: 28px; flex: 0 0 auto; overflow: hidden; border: 1px solid #d5b97b66; border-radius: 5px; background: #0b0f0d; box-shadow: inset 0 0 0 1px #ffffff12; }
+.ability-icon img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.ability-card-icons .ability-icon { width: 34px; height: 34px; }
 .stats-list.blessing-list { display: flex; flex-direction: column; justify-content: flex-start; gap: 8px; min-height: 0; overflow-y: auto; }
 .stats-list.blessing-list.is-empty { padding: 0; border-top: 0; }
 .selected-blessing { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 12px 0; color: var(--text); text-align: left; background: transparent; border: 0; border-bottom: 1px solid var(--line); }
+.selected-blessing-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .selected-blessing strong { color: var(--gold); font-size: 15px; }
 .selected-blessing > span { font-size: 13px; line-height: 1.5; }
 .selected-blessing small { font-size: 11px; line-height: 1.4; color: var(--muted); }
@@ -349,6 +354,8 @@ h2 { font: 500 28px/1.15 var(--serif); }
 .ability-section { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
 .ability-section-label { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; color: var(--muted); font-size: 11px; letter-spacing: .5px; }
 #ability-cooldown { padding: 5px 8px; border: 1px solid #d5b97b40; border-radius: 4px; color: var(--gold); font-size: 12px; font-weight: 500; }
+.ability-detail { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: start; margin-top: 12px; }
+.ability-detail-icon { width: 96px; height: 96px; border: 1px solid #d5b97b66; border-radius: 8px; object-fit: cover; background: #090d0b; box-shadow: 0 10px 30px #0007, inset 0 0 0 1px #ffffff12; }
 .ability-section h3 { margin: 12px 0 8px; color: var(--gold); font: 500 26px/1.15 var(--serif); }
 .ability-section p { font-size: 16px; line-height: 1.65; }
 @media (max-width: 900px) and (min-height: 501px) {
@@ -356,18 +363,23 @@ h2 { font: 500 28px/1.15 var(--serif); }
   .selected-blessing { padding: 0 0 4px; border: 0; gap: 3px; }
   .selected-blessing strong { font-size: 12px; }
   .selected-blessing > span { font-size: 11px; line-height: 1.4; }
+  .ability-mini-icons .ability-icon { width: 22px; height: 22px; }
   .selected-blessing small { display: none; }
 }
 @media (max-width: 600px) {
-  .ability-info { font-size: 11px; min-height: 32px; bottom: 0; }
+  .ability-info { font-size: 11px; min-height: 46px; bottom: 0; gap: 4px; }
+  .ability-card-icons .ability-icon { width: 28px; height: 28px; }
   .cards:has(.card-option) { --caption-space: 116px; }
   .god-role { font-size: 11px; }
   #ability-dialog { padding: 18px; }
+  .ability-detail { grid-template-columns: 1fr; gap: 8px; }
+  .ability-detail-icon { width: 84px; height: 84px; }
 }
 @media (max-height: 500px) {
   .cards:has(.card-option) { --caption-space: 92px; }
   .god-role { font-size: 10px; margin-top: 3px; }
-  .ability-info { min-height: 32px; font-size: 10px; bottom: 0; }
+  .ability-info { min-height: 42px; font-size: 10px; bottom: 0; gap: 3px; }
+  .ability-card-icons .ability-icon { width: 24px; height: 24px; }
   .has-abilities .blessing-list { max-height: max(90px, calc(100svh - 210px)); }
   .selected-blessing { padding: 6px 0; gap: 3px; }
   .selected-blessing strong { font-size: 12px; }

@@ -2,24 +2,32 @@ let pantheon = null;
 let selected = [];
 const $ = id => document.getElementById(id);
 const bonusLabel = ([id,value]) => {const stat = STATS.find(s => s.id === id);return `+${value}${stat.unit} ${stat.label}`;};
+const abilityIconMarkup = (path, label) => path ? `<span class="ability-icon"><img src="${path}" alt="${label}"></span>` : '';
 
 function cardMarkup(item,index,summary=false){
   const theme = pantheon || item;
+  const iconPair = item.active ? `${abilityIconMarkup(item.active.icon, `${item.active.name} active icon`)}${abilityIconMarkup(item.passive.icon, `${item.passive.name} passive icon`)}` : '';
   const card = `<${summary?'article':'button type="button"'} class="card${summary?' summary':''}" style="--accent:${theme.accent};--tone:${theme.tone}" ${summary?'':`data-choice="${index}" aria-label="Choose ${item.name}"`}>
     <div class="card-visual">${item.image?`<img src="${item.image}" alt="" width="800" height="1600">`:`<span class="card-index">0${index+1}</span><span class="ornament"></span><span class="card-art">${svg(item.icon)}</span><span class="visual-star">✦</span>`}</div>
     <div class="card-body"><p class="card-kicker">${item.realm || item.title}</p><h3>${item.name}</h3>${item.role?`<p class="god-role">${item.role}</p>`:''}
     ${item.active?'':item.stats?`<div class="bonuses">${Object.entries(item.stats).map(entry=>`<span class="bonus">${bonusLabel(entry)}</span>`).join('')}</div>`:`<p class="card-description">${item.description}</p>`}
     ${item.stats?`<div class="card-action"><span>${summary?'Selected':'Choose god'}</span><span aria-hidden="true">${summary?'✓':'↗'}</span></div>`:''}</div>
   </${summary?'article':'button'}>`;
-  return item.active ? `<div class="card-option">${card}<button type="button" class="ability-info" data-info="${index}" aria-label="View ${item.name}'s abilities and 24 hour cooldown">Abilities · 24h CD</button></div>` : card;
+  return item.active ? `<div class="card-option">${card}<button type="button" class="ability-info" data-info="${index}" aria-label="View ${item.name}'s abilities and 24 hour cooldown">${iconPair?`<span class="ability-card-icons">${iconPair}</span>`:''}<span>Abilities · 24h CD</span></button></div>` : card;
 }
 
 function showAbilities(choice) {
   $('ability-title').textContent = choice.name;
   $('ability-role').textContent = choice.role;
+  $('ability-active-icon').hidden = !choice.active.icon;
+  $('ability-active-icon').src = choice.active.icon || '';
+  $('ability-active-icon').alt = choice.active.icon ? `${choice.active.name} active icon` : '';
   $('ability-active-name').textContent = choice.active.name;
   $('ability-cooldown').textContent = `${choice.active.cooldownHours}h cooldown`;
   $('ability-active-description').textContent = choice.active.description;
+  $('ability-passive-icon').hidden = !choice.passive.icon;
+  $('ability-passive-icon').src = choice.passive.icon || '';
+  $('ability-passive-icon').alt = choice.passive.icon ? `${choice.passive.name} passive icon` : '';
   $('ability-passive-name').textContent = choice.passive.name;
   $('ability-passive-description').textContent = choice.passive.description;
   $('ability-dialog').showModal();
@@ -55,7 +63,7 @@ function render(focus=false){
   statsDescription.textContent = selected.length ? 'Passive effects gained. Active city abilities have a 24h cooldown.' : '';
   document.querySelector('.page-footer > span').textContent = hasBlessings ? 'Active abilities · 24h cooldown' : 'Divine ability testing';
   $('stats-list').innerHTML = !pantheon || !selected.length ? '' : hasBlessings
-    ? selected.map((choice,index)=>`<button type="button" class="selected-blessing" data-selected-info="${index}" aria-label="View ${choice.name}'s abilities"><strong>${choice.name}</strong><span class="god-role">${choice.role}</span><span>${choice.passive.summary}</span><small>${choice.active.name} · 24h CD ↗</small></button>`).join('')
+    ? selected.map((choice,index)=>`<button type="button" class="selected-blessing" data-selected-info="${index}" aria-label="View ${choice.name}'s abilities"><span class="selected-blessing-head"><span><strong>${choice.name}</strong><span class="god-role">${choice.role}</span></span><span class="ability-mini-icons">${abilityIconMarkup(choice.active.icon, `${choice.active.name} active icon`)}${abilityIconMarkup(choice.passive.icon, `${choice.passive.name} passive icon`)}</span></span><span>${choice.passive.summary}</span><small>${choice.active.name} · 24h CD ↗</small></button>`).join('')
     : STATS.map(stat=>`<div class="stat-row"><span class="stat-name"><span class="stat-icon" aria-hidden="true">${stat.icon}</span>${stat.label}</span><strong class="stat-value${totals[stat.id]?' gained':''}">+${totals[stat.id]}${stat.unit}</strong></div>`).join('');
   $('god-count').innerHTML = `${count} <span>/ 3</span>`;
   $('progress-fill').style.width = `${count/3*100}%`;

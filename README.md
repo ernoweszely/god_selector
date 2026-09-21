@@ -61,7 +61,7 @@ Edit `PANTHEONS` in `data.js` to change the three rounds and their order. Each r
 
 All active abilities use `ACTIVE_COOLDOWN_HOURS = 24`. Dionysus's passive is **“25% effectivity and duration for festivals.”**
 
-Add artwork to `assets/` and set the corresponding `image` path. Use lowercase filenames with an exact **1:2 width-to-height ratio**, such as **800 × 1600 px**. Keep labels out of the image; the app renders names and roles separately. PNG artwork is checked for the required ratio. Supplied image files are included in the repository.
+Add god artwork to `assets/` and set the corresponding `image` path. Use lowercase filenames with an exact **1:2 width-to-height ratio**, such as **800 × 1600 px**. Keep labels out of the image; the app renders names and roles separately. Add square active/passive ability icons under `assets/abilities/` and reference them from `BLESSINGS`. PNG god artwork is checked for the required ratio; ability icons are checked as PNG files. Supplied image files are included in the repository.
 
 Run `npm run check` after edits. Keep data and asset paths relative so the app works under a GitHub repository subdirectory. `data.js` must load before `app.js`; both are deferred classic scripts so direct file opening continues to work.
 

@@ -19,21 +19,32 @@ const icons = {
 };
 const svg = name => `<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.sun}</svg>`;
 const ACTIVE_COOLDOWN_HOURS = 24;
-const blessing = (role, activeName, activeDescription, passiveName, passiveDescription, passiveSummary) => ({
+const abilityIcons = {
+  Zeus: { active: 'assets/abilities/zeus-active.png', passive: 'assets/abilities/zeus-passive.png' },
+  Hades: { active: 'assets/abilities/hades-active.png', passive: 'assets/abilities/hades-passive.png' },
+  Poseidon: { active: 'assets/abilities/poseidon-active.png', passive: 'assets/abilities/poseidon-passive.png' },
+  Athena: { active: 'assets/abilities/athena-active.png', passive: 'assets/abilities/athena-passive.png' },
+  Aphrodite: { active: 'assets/abilities/aphrodite-active.png', passive: 'assets/abilities/aphrodite-passive.png' },
+  Ares: { active: 'assets/abilities/ares-active.png', passive: 'assets/abilities/ares-passive.png' },
+  Dionysus: { active: 'assets/abilities/dionysus-active.png', passive: 'assets/abilities/dionysus-passive.png' },
+  Hermes: { active: 'assets/abilities/hermes-active.png', passive: 'assets/abilities/hermes-passive.png' },
+  Hera: { active: 'assets/abilities/hera-active.png', passive: 'assets/abilities/hera-passive.png' }
+};
+const blessing = (role, activeName, activeDescription, passiveName, passiveDescription, passiveSummary, icons = {}) => ({
   role,
-  active: { name: activeName, description: activeDescription, cooldownHours: ACTIVE_COOLDOWN_HOURS },
-  passive: { name: passiveName, description: passiveDescription, summary: passiveSummary }
+  active: { name: activeName, description: activeDescription, cooldownHours: ACTIVE_COOLDOWN_HOURS, icon: icons.active },
+  passive: { name: passiveName, description: passiveDescription, summary: passiveSummary, icon: icons.passive }
 });
 const BLESSINGS = {
-  Zeus: blessing('Offensive power', 'Lightning Bolt', 'Strikes an enemy city, disabling one random military building for 3 hours and reducing wall defense by 10%.', 'Supreme Authority', 'Your attacking armies gain +5% attack.', '+5% attacking army attack'),
-  Hades: blessing('Defense and attrition', 'Walls of Erebus', 'Surrounds a friendly city for 6 hours. Enemy attacks suffer −15% attack and cannot see the defending army.', 'Lord of the Dead', '5% of units lost while defending return after battle.', '5% of defensive losses return'),
-  Poseidon: blessing('Economy and disruption', 'Plenty', 'Increases all resource production in a friendly city by 25% for 8 hours.', 'Master of the Depths', 'Warehouses have +10% capacity.', '+10% warehouse capacity'),
-  Dionysus: blessing('Chaos and sabotage', 'Festival of Madness', 'Enemy construction, recruitment and research queues operate 25% slower for 6 hours.', 'Endless Celebration', '25% effectivity and duration for festivals.', '25% festival effectivity & duration'),
-  Hera: blessing('City protection', 'Divine Sanctuary', 'Protects a friendly city from hostile divine abilities and conquest for 4 hours. Normal attacks can still occur.', 'Queen’s Protection', 'Defensive units train 10% faster.', '10% faster defensive unit training'),
-  Hermes: blessing('Speed and trade', 'Divine Passage', 'One friendly army travels 40% faster and cannot be detected until it reaches half of its journey.', 'Patron of Merchants', 'Traders carry 20% more resources and move 15% faster.', '+20% trader capacity · +15% trader speed'),
-  Aphrodite: blessing('Manipulation', 'Irresistible Charm', 'Reduces the attack and defense of all enemy reinforcements in the targeted city by 15% for 6 hours.', 'Divine Devotion', 'Supporting units stationed in your cities consume 20% less food.', '−20% food for supporting units'),
-  Athena: blessing('Strategy and preparation', 'Battle Foresight', 'Reveals every incoming army targeting a friendly city, including exact units and arrival times, for 8 hours.', 'Strategic Wisdom', 'Research is 10% faster and defensive units gain +5% defense.', '10% faster research · +5% defensive unit defense'),
-  Ares: blessing('Pure warfare', 'Bloodlust', 'One outgoing army gains +20% attack, but survivors suffer 10% additional casualties after battle.', 'God of War', 'Offensive units train 10% faster.', '10% faster offensive unit training'),
+  Zeus: blessing('Offensive power', 'Lightning Bolt', 'Strikes an enemy city, disabling one random military building for 3 hours and reducing wall defense by 10%.', 'Supreme Authority', 'Your attacking armies gain +5% attack.', '+5% attacking army attack', abilityIcons.Zeus),
+  Hades: blessing('Defense and attrition', 'Walls of Erebus', 'Surrounds a friendly city for 6 hours. Enemy attacks suffer −15% attack and cannot see the defending army.', 'Lord of the Dead', '5% of units lost while defending return after battle.', '5% of defensive losses return', abilityIcons.Hades),
+  Poseidon: blessing('Economy and disruption', 'Plenty', 'Increases all resource production in a friendly city by 25% for 8 hours.', 'Master of the Depths', 'Warehouses have +10% capacity.', '+10% warehouse capacity', abilityIcons.Poseidon),
+  Dionysus: blessing('Chaos and sabotage', 'Festival of Madness', 'Enemy construction, recruitment and research queues operate 25% slower for 6 hours.', 'Endless Celebration', '25% effectivity and duration for festivals.', '25% festival effectivity & duration', abilityIcons.Dionysus),
+  Hera: blessing('City protection', 'Divine Sanctuary', 'Protects a friendly city from hostile divine abilities and conquest for 4 hours. Normal attacks can still occur.', 'Queen’s Protection', 'Defensive units train 10% faster.', '10% faster defensive unit training', abilityIcons.Hera),
+  Hermes: blessing('Speed and trade', 'Divine Passage', 'One friendly army travels 40% faster and cannot be detected until it reaches half of its journey.', 'Patron of Merchants', 'Traders carry 20% more resources and move 15% faster.', '+20% trader capacity · +15% trader speed', abilityIcons.Hermes),
+  Aphrodite: blessing('Manipulation', 'Irresistible Charm', 'Reduces the attack and defense of all enemy reinforcements in the targeted city by 15% for 6 hours.', 'Divine Devotion', 'Supporting units stationed in your cities consume 20% less food.', '−20% food for supporting units', abilityIcons.Aphrodite),
+  Athena: blessing('Strategy and preparation', 'Battle Foresight', 'Reveals every incoming army targeting a friendly city, including exact units and arrival times, for 8 hours.', 'Strategic Wisdom', 'Research is 10% faster and defensive units gain +5% defense.', '10% faster research · +5% defensive unit defense', abilityIcons.Athena),
+  Ares: blessing('Pure warfare', 'Bloodlust', 'One outgoing army gains +20% attack, but survivors suffer 10% additional casualties after battle.', 'God of War', 'Offensive units train 10% faster.', '10% faster offensive unit training', abilityIcons.Ares),
   Ra: blessing('Offensive power', 'Solar Flare', 'Target enemy city suffers −10% unit defense and −15% wall effectiveness for 6 hours.', 'Radiance of Ra', 'Your armies gain +5% attack during offensive battles.', '+5% offensive battle attack'),
   Amun: blessing('Concealment', 'Veil of Amun', 'Conceals the units, resources and queues of a friendly city from scouting for 8 hours. Incoming reinforcements are also hidden.', 'The Hidden One', 'Enemy spy missions against you have −15% success chance.', '−15% enemy spy success chance'),
   Ptah: blessing('Construction', 'Divine Architect', 'Advances the current construction in a friendly city by 25%, up to a defined time limit.', 'Master Craftsman', 'Buildings cost 5% fewer resources.', '5% cheaper buildings'),

@@ -51,11 +51,14 @@ main { flex: 1; display: flex; padding: clamp(12px, 2.5svh, 28px) 0 0; }
 .assembly-line { position: absolute; top: calc(var(--circle) / 2); left: 21%; right: 21%; height: 1px; background: #434a38; }
 .slots { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .slot { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; }
-.slot-circle { width: var(--circle); height: var(--circle); flex-shrink: 0; display: grid; place-items: center; position: relative; border: 1px dashed #5b624f; border-radius: 50%; background: #141812; color: #9ba48b; font: 26px var(--serif); }
+.slot-circle { width: var(--circle); height: var(--circle); flex-shrink: 0; display: grid; place-items: center; position: relative; overflow: hidden; border: 1px dashed #5b624f; border-radius: 50%; background: #141812; color: #9ba48b; font: 26px var(--serif); }
 .slot-circle.active { border: 1px solid var(--gold); color: var(--gold); box-shadow: 0 0 0 5px #c5a76809; }
-.slot-circle.filled { border: 1px solid var(--accent); color: var(--accent); background: var(--tone); }
+.slot-circle.filled { border: 1px solid var(--accent); color: var(--accent); background: var(--tone); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent); }
 .slot-circle svg { width: 48%; height: 48%; }
-.slot-number { position: absolute; bottom: -3px; right: -2px; display: grid; place-items: center; width: 20px; height: 20px; background: #171b16; border: 1px solid #60684e; border-radius: 50%; color: var(--gold); font: 11px var(--sans); }
+.slot-circle.portrait { background: #0c0f0c; }
+.slot-circle.portrait::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0 0 0 1px #ffffff24, inset 0 -18px 24px #0008; pointer-events: none; }
+.slot-portrait { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+.slot-number { position: absolute; bottom: 0; right: 0; z-index: 1; display: grid; place-items: center; width: 20px; height: 20px; background: #171b16; border: 1px solid #60684e; border-radius: 50%; color: var(--gold); font: 11px var(--sans); }
 .slot-label { color: var(--muted); font-size: 12px; text-align: center; overflow-wrap: anywhere; }
 .slot.filled .slot-label { color: var(--text); }
 .selection-heading { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: clamp(10px, 2svh, 22px); border-top: 1px solid var(--line); }
@@ -332,11 +335,11 @@ h2 { font: 500 28px/1.15 var(--serif); }
 .ability-info { position: absolute; bottom: 4px; left: 0; width: 100%; min-height: 40px; padding: 3px; background: transparent; border: 0; color: var(--gold); font-size: 12px; text-decoration: underline; text-underline-offset: 4px; }
 .ability-info:hover { color: var(--text); }
 .stats-list.blessing-list { display: flex; flex-direction: column; justify-content: flex-start; gap: 8px; min-height: 0; overflow-y: auto; }
+.stats-list.blessing-list.is-empty { padding: 0; border-top: 0; }
 .selected-blessing { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 12px 0; color: var(--text); text-align: left; background: transparent; border: 0; border-bottom: 1px solid var(--line); }
 .selected-blessing strong { color: var(--gold); font-size: 15px; }
 .selected-blessing > span { font-size: 13px; line-height: 1.5; }
 .selected-blessing small { font-size: 11px; line-height: 1.4; color: var(--muted); }
-.empty-blessings { color: var(--muted); font-size: 13px; line-height: 1.6; padding: 16px 0; }
 #ability-dialog { width: min(560px, calc(100% - 24px)); max-height: calc(100svh - 32px); margin: auto; overflow: auto; padding: 26px; border: 1px solid #7b724e; border-radius: 12px; color: var(--text); background: #191e18; box-shadow: 0 24px 90px #0009; }
 #ability-dialog::backdrop { background: #070b08c9; backdrop-filter: blur(4px); }
 .ability-dialog-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
@@ -354,7 +357,6 @@ h2 { font: 500 28px/1.15 var(--serif); }
   .selected-blessing strong { font-size: 12px; }
   .selected-blessing > span { font-size: 11px; line-height: 1.4; }
   .selected-blessing small { display: none; }
-  .empty-blessings { grid-column: 1 / -1; font-size: 12px; padding: 4px 0; }
 }
 @media (max-width: 600px) {
   .ability-info { font-size: 11px; min-height: 32px; bottom: 0; }

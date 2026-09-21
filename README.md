@@ -8,12 +8,12 @@ A responsive god-selection sandbox built with plain HTML, CSS, and JavaScript. C
 
 - Greek, Nordic, and Egyptian pantheons, with **3 → 3 → 3** god choices.
 - Three selection circles; click a filled circle to revise that and later choices.
-- Greek roles, active city abilities with **24-hour cooldowns**, and passive effects.
+- God roles, active city abilities with **24-hour cooldowns**, and passive effects for every pantheon.
 - Live build summary, ability-details dialogs, back navigation, and reset.
 - **1:2 artwork** that keeps its proportions on desktop, tablet, and phone screens.
 - Keyboard-accessible controls and dialogs, with reduced-motion support.
 
-Greek content and artwork are configured. Nordic and Egyptian god bonuses are still sample data. Cooldowns describe game rules; this sandbox does not cast abilities or run timers. Refreshing the page resets selections.
+Greek, Nordic, and Egyptian content and artwork are configured. Cooldowns describe game rules; this sandbox does not cast abilities or run timers. Refreshing the page resets selections.
 
 ## Run locally
 
@@ -49,7 +49,7 @@ index.html          Page structure and ability dialog
 styles.css          Theme, responsive layout, and fixed-ratio banners
 data.js             Pantheons, god order, roles, abilities, stats, and icons
 app.js              Selection state, rendering, and interactions
-assets/             Supplied pantheon and Greek god artwork
+assets/             Supplied pantheon and god artwork
 scripts/            Dependency-free checks, build, and local server
 .github/workflows/  Pull-request checks and GitHub Pages deployment
 dist/               Generated site; ignored by Git
@@ -57,7 +57,7 @@ dist/               Generated site; ignored by Git
 
 ## Update gods and artwork
 
-Edit `PANTHEONS` in `data.js` to change the three rounds and their order. Each round contains three gods. Edit `GREEK_BLESSINGS` to change a Greek god's role, active ability, or passive effect. Greek passives are displayed separately because they affect different unit types and situations; temporary active effects are not added to permanent totals.
+Edit `PANTHEONS` in `data.js` to change the three rounds and their order. Each round contains three gods. Edit `BLESSINGS` to change a god's role, active ability, or passive effect. Passives are displayed separately because they affect different unit types and situations; temporary active effects are not added to permanent totals.
 
 All active abilities use `ACTIVE_COOLDOWN_HOURS = 24`. Dionysus's passive is **“25% effectivity and duration for festivals.”**
 

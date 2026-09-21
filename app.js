@@ -28,10 +28,11 @@ function showAbilities(choice) {
 function render(focus=false){
   const count = selected.length;
   const complete = count === 3;
-  const hasAbilities = pantheon?.id === 'greek';
+  const hasBlessings = Boolean(pantheon?.rounds?.some(round => round.some(choice => choice.active)));
   $('slots').innerHTML = [0,1,2].map(index => {
     const choice = selected[index];
-    return `<div class="slot${choice?' filled':''}"><button type="button" class="slot-circle ${choice?'filled':pantheon && index === count?'active':''}" ${choice?`data-edit="${index}" aria-label="Change ${choice.name}, selection ${index+1}"`:'disabled'} style="${pantheon?`--accent:${pantheon.accent};--tone:${pantheon.tone}`:''}">${choice?svg(choice.icon):['I','II','III'][index]}${choice?`<span class="slot-number">${index+1}</span>`:''}</button><span class="slot-label">${choice?choice.name:['First blessing','Second blessing','Third blessing'][index]}</span></div>`;
+    const slotArt = choice?.image ? `<img class="slot-portrait" src="${choice.image}" alt="">` : choice ? svg(choice.icon) : ['I','II','III'][index];
+    return `<div class="slot${choice?' filled':''}"><button type="button" class="slot-circle ${choice?'filled portrait':pantheon && index === count?'active':''}" ${choice?`data-edit="${index}" aria-label="Change ${choice.name}, selection ${index+1}"`:'disabled'} style="${pantheon?`--accent:${pantheon.accent};--tone:${pantheon.tone}`:''}">${slotArt}${choice?`<span class="slot-number">${index+1}</span>`:''}</button><span class="slot-label">${choice?choice.name:['First blessing','Second blessing','Third blessing'][index]}</span></div>`;
   }).join('');
   $('step-label').textContent = complete?'YOUR ASSEMBLY IS COMPLETE':pantheon?`${pantheon.name.toUpperCase()} PANTHEON · BLESSING ${count+1}`:'THE FIRST STEP';
   $('choice-title').textContent = complete?'Your divine assembly':pantheon?['Choose your first god','Choose your second god','Choose your final god'][count]:'Choose your pantheon';
@@ -41,18 +42,20 @@ function render(focus=false){
   $('cards').classList.toggle('two-cards',choices.length === 2);
   $('cards').innerHTML = choices.map((item,index)=>cardMarkup(item,index,complete)).join('');
   $('back').hidden = !pantheon;
-  $('selection-hint').textContent = complete?'Click a filled circle to revise your choices.':hasAbilities?'Tap a banner to choose. View abilities for details.':pantheon?'Each blessing adds to your total stats.':'Your pantheon determines the gods you can choose.';
+  $('selection-hint').textContent = complete?'Click a filled circle to revise your choices.':hasBlessings?'Tap a banner to choose. View abilities for details.':pantheon?'Each blessing adds to your total stats.':'Your pantheon determines the gods you can choose.';
   $('pantheon-name').textContent = pantheon?`${pantheon.name} pantheon`:'Not yet chosen';
   $('pantheon-symbol').innerHTML = pantheon?svg(pantheon.icon):'◇';
   const totals = Object.fromEntries(STATS.map(stat=>[stat.id,0]));
   selected.forEach(choice=>Object.entries(choice.stats).forEach(([id,value])=>totals[id]+=value));
-  $('stats-list').classList.toggle('blessing-list', hasAbilities);
-  document.querySelector('.stats-panel').classList.toggle('has-abilities', hasAbilities);
-  document.querySelector('.stats-description').textContent = hasAbilities ? 'Your passive effects. Active city abilities have a 24h cooldown.' : 'The power of your chosen gods, combined.';
-  document.querySelector('.page-footer > span').textContent = hasAbilities ? 'Active abilities · 24h cooldown' : 'Sample gods & stats';
-  $('stats-list').innerHTML = hasAbilities
-    ? selected.length ? selected.map((choice,index)=>`<button type="button" class="selected-blessing" data-selected-info="${index}" aria-label="View ${choice.name}'s abilities"><strong>${choice.name}</strong><span class="god-role">${choice.role}</span><span>${choice.passive.summary}</span><small>${choice.active.name} · 24h CD ↗</small></button>`).join('')
-      : '<p class="empty-blessings">Choose a god to gain a passive effect and an active city ability.</p>'
+  $('stats-list').classList.toggle('blessing-list', hasBlessings);
+  $('stats-list').classList.toggle('is-empty', selected.length === 0);
+  document.querySelector('.stats-panel').classList.toggle('has-abilities', hasBlessings);
+  const statsDescription = document.querySelector('.stats-description');
+  statsDescription.hidden = !selected.length;
+  statsDescription.textContent = selected.length ? 'Passive effects gained. Active city abilities have a 24h cooldown.' : '';
+  document.querySelector('.page-footer > span').textContent = hasBlessings ? 'Active abilities · 24h cooldown' : 'Divine ability testing';
+  $('stats-list').innerHTML = !pantheon || !selected.length ? '' : hasBlessings
+    ? selected.map((choice,index)=>`<button type="button" class="selected-blessing" data-selected-info="${index}" aria-label="View ${choice.name}'s abilities"><strong>${choice.name}</strong><span class="god-role">${choice.role}</span><span>${choice.passive.summary}</span><small>${choice.active.name} · 24h CD ↗</small></button>`).join('')
     : STATS.map(stat=>`<div class="stat-row"><span class="stat-name"><span class="stat-icon" aria-hidden="true">${stat.icon}</span>${stat.label}</span><strong class="stat-value${totals[stat.id]?' gained':''}">+${totals[stat.id]}${stat.unit}</strong></div>`).join('');
   $('god-count').innerHTML = `${count} <span>/ 3</span>`;
   $('progress-fill').style.width = `${count/3*100}%`;

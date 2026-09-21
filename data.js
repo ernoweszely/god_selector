@@ -1,4 +1,4 @@
-// Greek abilities use the supplied game rules. Other pantheons remain samples.
+// Supplied game rules replace sample stat totals when a god has a blessing entry.
 // Each pantheon has three rounds with three choices per round.
 const icons = {
   temple: '<path d="M12 33 50 12l38 21M18 37h64M22 74h56M15 83h70M29 41v28m14-28v28m14-28v28m14-28v28"/>',
@@ -24,7 +24,7 @@ const blessing = (role, activeName, activeDescription, passiveName, passiveDescr
   active: { name: activeName, description: activeDescription, cooldownHours: ACTIVE_COOLDOWN_HOURS },
   passive: { name: passiveName, description: passiveDescription, summary: passiveSummary }
 });
-const GREEK_BLESSINGS = {
+const BLESSINGS = {
   Zeus: blessing('Offensive power', 'Lightning Bolt', 'Strikes an enemy city, disabling one random military building for 3 hours and reducing wall defense by 10%.', 'Supreme Authority', 'Your attacking armies gain +5% attack.', '+5% attacking army attack'),
   Hades: blessing('Defense and attrition', 'Walls of Erebus', 'Surrounds a friendly city for 6 hours. Enemy attacks suffer −15% attack and cannot see the defending army.', 'Lord of the Dead', '5% of units lost while defending return after battle.', '5% of defensive losses return'),
   Poseidon: blessing('Economy and disruption', 'Plenty', 'Increases all resource production in a friendly city by 25% for 8 hours.', 'Master of the Depths', 'Warehouses have +10% capacity.', '+10% warehouse capacity'),
@@ -33,9 +33,27 @@ const GREEK_BLESSINGS = {
   Hermes: blessing('Speed and trade', 'Divine Passage', 'One friendly army travels 40% faster and cannot be detected until it reaches half of its journey.', 'Patron of Merchants', 'Traders carry 20% more resources and move 15% faster.', '+20% trader capacity · +15% trader speed'),
   Aphrodite: blessing('Manipulation', 'Irresistible Charm', 'Reduces the attack and defense of all enemy reinforcements in the targeted city by 15% for 6 hours.', 'Divine Devotion', 'Supporting units stationed in your cities consume 20% less food.', '−20% food for supporting units'),
   Athena: blessing('Strategy and preparation', 'Battle Foresight', 'Reveals every incoming army targeting a friendly city, including exact units and arrival times, for 8 hours.', 'Strategic Wisdom', 'Research is 10% faster and defensive units gain +5% defense.', '10% faster research · +5% defensive unit defense'),
-  Ares: blessing('Pure warfare', 'Bloodlust', 'One outgoing army gains +20% attack, but survivors suffer 10% additional casualties after battle.', 'God of War', 'Offensive units train 10% faster.', '10% faster offensive unit training')
+  Ares: blessing('Pure warfare', 'Bloodlust', 'One outgoing army gains +20% attack, but survivors suffer 10% additional casualties after battle.', 'God of War', 'Offensive units train 10% faster.', '10% faster offensive unit training'),
+  Ra: blessing('Offensive power', 'Solar Flare', 'Target enemy city suffers −10% unit defense and −15% wall effectiveness for 6 hours.', 'Radiance of Ra', 'Your armies gain +5% attack during offensive battles.', '+5% offensive battle attack'),
+  Amun: blessing('Concealment', 'Veil of Amun', 'Conceals the units, resources and queues of a friendly city from scouting for 8 hours. Incoming reinforcements are also hidden.', 'The Hidden One', 'Enemy spy missions against you have −15% success chance.', '−15% enemy spy success chance'),
+  Ptah: blessing('Construction', 'Divine Architect', 'Advances the current construction in a friendly city by 25%, up to a defined time limit.', 'Master Craftsman', 'Buildings cost 5% fewer resources.', '5% cheaper buildings'),
+  Anubis: blessing('Death and recovery', 'Judgement of Anubis', 'Marks an enemy city for 6 hours. Units defeated there recover 15% slower, while 10% of your casualties from attacks against it return.', 'Guardian of Souls', 'Your units train 10% faster after a battle for 6 hours.', '10% faster training after battle'),
+  Osiris: blessing('Restoration', 'Rebirth', 'Restores one recently lost building level and repairs 25% of the city’s damaged wall. Cannot restore buildings damaged more than 24 hours ago.', 'Eternal Harvest', 'Food production and population capacity gain +5%.', '+5% food production and population capacity'),
+  Isis: blessing('Protection and support', 'Wings of Isis', 'A friendly city gains +15% defense and is immune to hostile divine abilities for 4 hours.', 'Divine Healing', '5% of units lost while defending return after battle.', '5% of defensive losses return'),
+  Horus: blessing('Precision warfare', 'Eye of Horus', 'Reveals all units and reinforcements in an enemy city. Your next attack against it gains +10% attack.', 'Lord of the Sky', 'Your armies travel 5% faster.', '+5% army travel speed'),
+  Thoth: blessing('Research and knowledge', 'Book of Thoth', 'Advances the current research by 25%, up to a defined time limit, and reveals active effects on the targeted city.', 'Divine Knowledge', 'Research completes 10% faster.', '10% faster research'),
+  Hathor: blessing('Prosperity and morale', 'Festival of Hathor', 'A friendly city gains +20% resource production and +15% recruitment speed for 6 hours, but cannot launch attacks.', 'Joyful Hearth', 'Supporting units travel 15% faster.', '+15% supporting unit travel speed'),
+  Thor: blessing('Siege and disruption', 'Thunderstorm', 'An enemy city suffers −10% unit defense, −15% wall effectiveness and −15% production for 6 hours.', 'Thunderous March', 'Siege units deal 10% more wall damage.', '+10% siege wall damage'),
+  Odin: blessing('Intelligence', 'Huginn and Muninn', 'Reveals an enemy city’s units, resources, queues and incoming or outgoing armies for 60 minutes.', 'Allfather’s Wisdom', 'Research completes 10% faster.', '10% faster research'),
+  Frigg: blessing('Protection and foresight', 'Threads of Fate', 'A friendly city gains +15% defense and cancels the first hostile divine ability used against it during the next 6 hours.', 'Blessing of the Hearth', 'Defensive units train 10% faster.', '10% faster defensive unit training'),
+  Freyja: blessing('Reinforcements', 'Valkyrie’s Call', 'Reinforcements sent to a selected friendly city travel 30% faster and gain +10% defense for their first battle there.', 'Chosen Warriors', '5% of units lost while defending return after battle.', '5% of defensive losses return'),
+  Freyr: blessing('Growth and prosperity', 'Golden Harvest', 'A friendly city gains +25% resource production and +10% population capacity for 8 hours.', 'Lord of Plenty', 'Food production and warehouse capacity gain +5%.', '+5% food production and warehouse capacity'),
+  Loki: blessing('Deception and sabotage', 'Web of Lies', 'Creates several false attacks against an enemy city while hiding the unit composition of one real attack.', 'Trickster', 'Your spy missions have +15% success chance.', '+15% spy mission success chance'),
+  Tyr: blessing('Disciplined warfare', 'Trial by Combat', 'One army gains +15% attack and cannot be weakened by enemy attack-reduction effects for its next battle. It cannot be recalled.', 'God of Courage', 'Offensive units train 10% faster.', '10% faster offensive unit training'),
+  Heimdall: blessing('Detection and vigilance', 'Gjallarhorn', 'For 8 hours, a friendly city reveals the exact composition and origin of every incoming army. Supporting armies travel 20% faster toward it.', 'Eternal Watch', 'Enemy armies move 15% slower after passing half their travel time toward the city.', 'Enemy armies slow 15% after halfway'),
+  Baldr: blessing('Resilience', 'Light of Baldr', 'For 4 hours, a friendly city’s buildings cannot lose levels and its wall takes 30% less damage.', 'The Shining One', 'Units defending your cities gain +5% defense.', '+5% city defender defense')
 };
-const god = (name, title, icon, stats, image) => ({ name, title, icon, stats: GREEK_BLESSINGS[name] ? {} : stats, image, ...GREEK_BLESSINGS[name] });
+const god = (name, title, icon, stats, image) => ({ name, title, icon, stats: BLESSINGS[name] ? {} : stats, image, ...BLESSINGS[name] });
 const PANTHEONS = [
   { id:'greek', name:'Greek', realm:'THE OLYMPIANS', description:'Ascend Olympus. Command the power of the immortals.', image:'assets/greek-banner.png', icon:'temple', accent:'#d5b97b', tone:'#2a281c', rounds:[
     [god('Zeus','Lord of the skies','bolt',{},'assets/zeus.png'),god('Hades','Lord of the underworld','flame',{},'assets/hades.png'),god('Poseidon','Ruler of the seas','trident',{},'assets/poseidon.png')],
@@ -43,14 +61,14 @@ const PANTHEONS = [
     [god('Dionysus','Lord of revelry','leaf',{},'assets/dionysus.png'),god('Hermes','Messenger of the gods','wing',{},'assets/hermes.png'),god('Hera','Queen of Olympus','temple',{},'assets/hera.png')]
   ]},
   { id:'nordic', name:'Nordic', realm:'THE AESIR', description:'Answer Asgard. Forge your fate beneath the world tree.', image:'assets/nordic-banner.png', icon:'nordic', accent:'#aabdd3', tone:'#202832', rounds:[
-    [god('Odin','The all-father','eye',{attack:10,critical:5}),god('Thor','Bringer of thunder','hammer',{attack:15,defense:5}),god('Freyja','Lady of the chosen','wing',{health:60,speed:3})],
-    [god('Loki','The shapeshifter','flame',{speed:7,critical:5}),god('Tyr','The fearless hand','sword',{attack:8,defense:10}),god('Freyr','Lord of prosperity','leaf',{health:50,defense:6})],
-    [god('Heimdall','Guardian of the bridge','eye',{defense:15,health:30}),god('Baldr','The shining god','sun',{health:70,speed:4}),god('Skadi','Huntress of winter','moon',{speed:6,critical:6})]
+    [god('Thor','Bringer of thunder','hammer',{attack:15,defense:5},'assets/thor.png'),god('Odin','The all-father','eye',{attack:10,critical:5},'assets/odin.png'),god('Frigg','Queen of Asgard','temple',{defense:8,health:70},'assets/frigg.png')],
+    [god('Freyja','Lady of the chosen','wing',{health:60,speed:3},'assets/freyja.png'),god('Freyr','Lord of prosperity','leaf',{health:50,defense:6},'assets/freyr.png'),god('Loki','The shapeshifter','flame',{speed:7,critical:5},'assets/loki.png')],
+    [god('Tyr','The fearless hand','sword',{attack:8,defense:10},'assets/tyr.png'),god('Heimdall','Guardian of the bridge','eye',{defense:15,health:30},'assets/heimdall.png'),god('Baldr','The shining god','sun',{health:70,speed:4},'assets/baldr.png')]
   ]},
   { id:'egyptian', name:'Egyptian', realm:'THE ETERNAL ONES', description:'Follow the Nile. Awaken the ancient power of eternity.', image:'assets/egyptian-banner.png', icon:'egypt', accent:'#92b9ac', tone:'#1b2e29', rounds:[
-    [god('Ra','The sun sovereign','sun',{attack:12,critical:3}),god('Isis','Mistress of magic','egypt',{health:80,defense:5}),god('Anubis','Guide of souls','scales',{defense:10,speed:4})],
-    [god('Horus','The watchful sky','eye',{attack:10,speed:5}),god('Bastet','The graceful guardian','moon',{speed:8,critical:4}),god('Thoth','Keeper of knowledge','owl',{defense:8,critical:5})],
-    [god('Osiris','Lord of renewal','leaf',{health:90,defense:5}),god('Sekhmet','The fierce protector','flame',{attack:16,critical:4}),god('Set','Lord of storms','bolt',{attack:12,speed:6})]
+    [god('Ra','The sun sovereign','sun',{attack:12,critical:3},'assets/ra.png'),god('Amun','The hidden king','egypt',{defense:7,critical:5},'assets/amun.png'),god('Ptah','Divine craftsman','temple',{defense:9,health:60},'assets/ptah.png')],
+    [god('Anubis','Guide of souls','scales',{defense:10,speed:4},'assets/anubis.png'),god('Osiris','Lord of renewal','leaf',{health:90,defense:5},'assets/osiris.png'),god('Isis','Mistress of magic','egypt',{health:80,defense:5},'assets/isis.png')],
+    [god('Horus','The watchful sky','eye',{attack:10,speed:5},'assets/horus.png'),god('Thoth','Keeper of knowledge','owl',{defense:8,critical:5},'assets/thoth.png'),god('Hathor','Lady of joy','sun',{health:70,speed:4},'assets/hathor.png')]
   ]}
 ];
 const STATS = [
